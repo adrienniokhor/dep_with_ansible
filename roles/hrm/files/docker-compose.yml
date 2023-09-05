@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=orangehrm_dev
+      - MYSQL_USER=orangehrm
+      - MYSQL_PASSWORD=orangehrm
+    volumes:
+      - ./orangehrm/volumes/db/mysql/data/:/var/lib/mysql
+      - ./orangehrm/volumes/db/mysql/logs/:/var/log/mysql
+      - /orangehrm/volumes/db/mysql/init:/docker-entrypoint-initdb.d/:ro
+    ports:
+      - "3306:3306"
+      
+  orangehrm:
+    image: orangehrm/orangehrm:5.5
+    ports:
+      - 8080:80
+      # - 443:443
+    environment:
+      - ORANGEHRM_DATABASE_HOST=db
+      - ORANGEHRM_DATABASE_USER=orangehrm
+      - ORANGEHRM_DATABASE_PASSWORD=orangehrm
+      - ORANGEHRM_DATABASE_NAME=orangehrm_dev
+      - PUID=998
+      - PGID=100
+    volumes:
+      - ./orangehrm/volumes/web/:/orangehrm
+    depends_on:
+      - db
+    links:
+      - db

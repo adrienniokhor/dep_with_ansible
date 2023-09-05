@@ -1,0 +1,4 @@
+---
+# vars file for dolibarr
+docker_compose_version: "1.29.2"
+DOLI_IMAGE_TAG: "17.0.2-php8.1"

@@ -1,0 +1,30 @@
+---
+- hosts: "{{ lookup('env','code_app') }}"
+  become: yes
+  vars:
+       app_name: "{{ lookup('env','app_name') }}"
+  tasks:
+    - name: deploy dolibarr app
+      include_role:
+        name: dolibarr
+      when: "app_name == 'dolibarr'"
+    
+    - name: deploy orangehrm app
+      include_role:
+        name: hrm
+      when: "app_name == 'hrm'"
+
+    - name: deploy prestashop app
+      include_role:
+        name: prestashop
+      when: "app_name == 'ecommerce'"
+
+- hosts: localhost
+  tasks:
+    - name: Clean local workdir
+      ansible.builtin.file:
+        path: '{{ item }}'
+        state: absent
+      with_items: 
+        - "ssh_key_{{ lookup('env','code_app') }}.pem"
+  

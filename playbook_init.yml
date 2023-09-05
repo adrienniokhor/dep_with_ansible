@@ -1,0 +1,16 @@
+- hosts: localhost
+  tasks:
+    - name: Create inventory 
+      template:
+        src: templates/inventory.yml.j2
+        dest: "inventory_{{ lookup('env','code_app') }}.yml"
+    
+    - name: Create private key file
+      template:
+        src: templates/ssh_key.pem.j2
+        dest: "ssh_key_{{ lookup('env','code_app') }}.pem"
+    
+    - name: Change permissions
+      ansible.builtin.file:
+        path: "ssh_key_{{ lookup('env','code_app') }}.pem"
+        mode: '0400'
