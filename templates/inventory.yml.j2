@@ -1,10 +1,10 @@
 ungrouped:
   hosts:
-    {{ lookup('env','code_app') }}:
-      ansible_host: {{ lookup('env','ip_host') }}
+    {{ code_app }}:
+      ansible_host: {{ ip_host }}
       ansible_user: "ubuntu"
       ansible_port: 22
-      ansible_ssh_private_key_file: ssh_key_{{ lookup('env','code_app') }}.pem
+      ansible_ssh_private_key_file: ssh_key_{{ code_app }}.pem
   vars:
     nginx_http_port: 80
     nginx_https_port: 443

@@ -1,8 +1,8 @@
 ---
-- hosts: "{{ lookup('env','code_app') }}"
+- hosts: "{{ code_app }}"
   become: yes
   vars:
-       app_name: "{{ lookup('env','app_name') }}"
+       app_name: "{{ app_name }}"
   tasks:
     - name: deploy dolibarr app
       include_role:
@@ -26,5 +26,5 @@
         path: '{{ item }}'
         state: absent
       with_items: 
-        - "ssh_key_{{ lookup('env','code_app') }}.pem"
+        - "ssh_key_{{ code_app }}.pem"
   
