@@ -1,102 +1,16 @@
 ---
-- name: Remove file (delete file)
-  ansible.builtin.file:
-    path: '{{ item }}'
-    state: absent
-  with_items: 
-    - /etc/apt/keyrings/docker.gpg
-    - /etc/apt/sources.list.d/docker.list
-- name: Update APT Package Manager
-  apt:
-    update_cache: yes
-- name: Install aptitude
-  apt:
-    name: aptitude
-    state: latest
-    update_cache: true
-- name: Install docker packages
-  remote_user: ubuntu
-  apt:
-    name: '{{ item }}'
-    state: latest
-    update_cache: yes
-  with_items:
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - software-properties-common
-    - python3-pip
-    - python3-setuptools
-  tags:
-    - docker
-- name: Add Docker s official GPG key
-  remote_user: ubuntu
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-  tags:
-    - docker
-- name: Verify that we have the key with the fingerprint
-  remote_user: ubuntu
-  apt_key:
-    id: 0EBFCD88
-    state: present
-  tags:
-    - docker
-- name: Set up the stable repository
-  remote_user: ubuntu
-  apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-    state: present
-    update_cache: yes
-  tags:
-    - docker
-- name: Update apt packages
-  remote_user: ubuntu
-  apt:
-    update_cache: yes
-  tags:
-    - docker
-- name: Install docker
-  remote_user: ubuntu
-  apt:
-    name: docker-ce
-    state: present
-    update_cache: yes
-  #notify: Start docker on boot
-  tags:
-    - docker
-- name: Add remote "ubuntu" user to "docker" group
-  remote_user: ubuntu
-  user:
-    name: "ubuntu"
-    group: "docker"
-    append: yes
-  tags:
-    - docker
-- name: Install docker-compose version {{ docker_compose_version }}
-  remote_user: ubuntu
-  get_url: 
-    url : https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
-    dest: ~/docker-compose
-    mode: 'u+x,g+x'
-- name: Check docker-compose exists
-  stat: path=~/docker-compose
-  register: docker_compose
-- name: Move docker-compose to /usr/local/bin/docker-compose
-  command: mv ~/docker-compose /usr/local/bin/docker-compose
-  when: docker_compose.stat.exists
-
 - name: Create workdir
   ansible.builtin.file:
-    path: ~/dolibarr
+    path: /home/ubuntu/dolibarr
     state: directory
     mode: '0755'
+    owner: ubuntu
+    group: ubuntu
 
 - name: Copy files in workdir
   ansible.builtin.copy:
     src: ../files/
-    dest: ~/dolibarr/
+    dest:  /home/ubuntu/dolibarr/
     directory_mode:
     owner: ubuntu
     group: ubuntu
@@ -107,20 +21,24 @@
     path: "{{ item }}"
     state: directory
     mode: '0755'
+    owner: ubuntu
+    group: ubuntu
   with_items:
-  - ~/dolibarr/volumes
-  - ~/dolibarr/volumes/db/mariadb
-  - ~/dolibarr/volumes/web/
-  - ~/dolibarr/volumes/web/documents
-  - ~/dolibarr/volumes/web/html
-  - ~/dolibarr/volumes/web/scripts
+  - /home/ubuntu/dolibarr/volumes
+  - /home/ubuntu/dolibarr/volumes/db
+  - /home/ubuntu/dolibarr/volumes/db/mariadb
+  - /home/ubuntu/dolibarr/volumes/web/
+  - /home/ubuntu/dolibarr/volumes/web/documents
+  - /home/ubuntu/dolibarr/volumes/web/html
+  - /home/ubuntu/dolibarr/volumes/web/scripts
 
 - name: Create and start services
   community.docker.docker_compose:
-    project_src: ~/dolibarr
+    project_src: /home/ubuntu/dolibarr
   register: output
   environment: 
     DOLI_IMAGE_TAG: '{{ DOLI_IMAGE_TAG }}'
+    IP_ADDRESS: '{{ ip_host }}'
 
 - name: Show results
   ansible.builtin.debug:

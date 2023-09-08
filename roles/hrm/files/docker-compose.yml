@@ -9,9 +9,9 @@ services:
       - MYSQL_USER=orangehrm
       - MYSQL_PASSWORD=orangehrm
     volumes:
-      - ./orangehrm/volumes/db/mysql/data/:/var/lib/mysql
-      - ./orangehrm/volumes/db/mysql/logs/:/var/log/mysql
-      - /orangehrm/volumes/db/mysql/init:/docker-entrypoint-initdb.d/:ro
+      - ./volumes/db/mysql/data/:/var/lib/mysql
+      - ./volumes/db/mysql/logs/:/var/log/mysql
+      - ./volumes/db/mysql/init:/docker-entrypoint-initdb.d/:ro
     ports:
       - "3306:3306"
       
@@ -28,7 +28,7 @@ services:
       - PUID=998
       - PGID=100
     volumes:
-      - ./orangehrm/volumes/web/:/orangehrm
+      - ./volumes/web:/orangehrm
     depends_on:
       - db
     links:

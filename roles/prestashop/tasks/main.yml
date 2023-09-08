@@ -21,6 +21,7 @@
     mode: '0755'
   with_items:
   - '/home/ubuntu/prestashop/volumes'
+  - '/home/ubuntu/prestashop/volumes/db'
   - '/home/ubuntu/prestashop/volumes/db/mysql'
   - '/home/ubuntu/prestashop/volumes/db/mysql/data'
   - '/home/ubuntu/prestashop/volumes/db/mysql/logs'
@@ -34,6 +35,8 @@
   community.docker.docker_compose:
     project_src: '/home/ubuntu/prestashop'
   register: output
+  environment: 
+    IP_ADDRESS: '{{ ip_host }}'
 
 - name: Show results
   ansible.builtin.debug:

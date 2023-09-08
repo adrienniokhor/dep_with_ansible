@@ -10,8 +10,8 @@ services:
       - MYSQL_USER=prestashop
       - MYSQL_PASSWORD=prestashop
     volumes:
-      - ./prestashop/volumes/db/mysql/data/:/var/lib/mysql
-      - ./prestashop/volumes/db/mysql/logs/:/var/log/mysql
+      - ./volumes/db/mysql/data/:/var/lib/mysql
+      - ./volumes/db/mysql/logs/:/var/log/mysql
     ports:
       - "3306:3306"
     networks:
@@ -25,7 +25,7 @@ services:
       - DB_NAME=prestashop_dev
       - DB_USER=prestashop
       - DB_PASSWD=prestashop
-      - PS_DOMAIN=localhost:8080
+      - PS_DOMAIN=${IP_ADDRESS}:8080
       - DB_PREFIX=ps_
       - ADMIN_MAIL=demo@coridigital.com
       - ADMIN_PASSWD=coridigital_demo
@@ -43,10 +43,10 @@ services:
       - PS_FOLDER_INSTALL=install-ans
       - PS_ENABLE_SSL=0
     volumes:
-      - ./prestashop/volumes/web/:/var/www/html
-      - ./prestashop/volumes/web/modules/:/var/www/html/modules
-      - ./prestashop/volumes/web/themes/:/var/www/html/themes
-      - ./prestashop/volumes/web/override/:/var/www/html/override
+      - ./volumes/web/:/var/www/html
+      - ./volumes/web/modules/:/var/www/html/modules
+      - ./volumes/web/themes/:/var/www/html/themes
+      - ./volumes/web/override/:/var/www/html/override
     links:
       - db
     depends_on:
@@ -56,7 +56,7 @@ services:
     networks:
       - prestashop-net
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
+      test: [ "CMD", "curl", "-f", "http://${IP_ADDRESS}:8080" ]
       interval: 30s
       timeout: 10s
       retries: 5

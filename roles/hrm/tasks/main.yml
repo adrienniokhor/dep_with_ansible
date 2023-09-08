@@ -1,102 +1,14 @@
 ---
-- name: Remove file (delete file)
-  ansible.builtin.file:
-    path: '{{ item }}'
-    state: absent
-  with_items: 
-    - /etc/apt/keyrings/docker.gpg
-    - /etc/apt/sources.list.d/docker.list
-- name: Update APT Package Manager
-  apt:
-    update_cache: yes
-- name: Install aptitude
-  apt:
-    name: aptitude
-    state: latest
-    update_cache: true
-- name: Install docker packages
-  remote_user: ubuntu
-  apt:
-    name: '{{ item }}'
-    state: latest
-    update_cache: yes
-  with_items:
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - software-properties-common
-    - python3-pip
-    - python3-setuptools
-  tags:
-    - docker
-- name: Add Docker s official GPG key
-  remote_user: ubuntu
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-  tags:
-    - docker
-- name: Verify that we have the key with the fingerprint
-  remote_user: ubuntu
-  apt_key:
-    id: 0EBFCD88
-    state: present
-  tags:
-    - docker
-- name: Set up the stable repository
-  remote_user: ubuntu
-  apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-    state: present
-    update_cache: yes
-  tags:
-    - docker
-- name: Update apt packages
-  remote_user: ubuntu
-  apt:
-    update_cache: yes
-  tags:
-    - docker
-- name: Install docker
-  remote_user: ubuntu
-  apt:
-    name: docker-ce
-    state: present
-    update_cache: yes
-  #notify: Start docker on boot
-  tags:
-    - docker
-- name: Add remote "ubuntu" user to "docker" group
-  remote_user: ubuntu
-  user:
-    name: "ubuntu"
-    group: "docker"
-    append: yes
-  tags:
-    - docker
-- name: Install docker-compose version {{ docker_compose_version }}
-  remote_user: ubuntu
-  get_url: 
-    url : https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
-    dest: ~/docker-compose
-    mode: 'u+x,g+x'
-- name: Check docker-compose exists
-  stat: path=~/docker-compose
-  register: docker_compose
-- name: Move docker-compose to /usr/local/bin/docker-compose
-  command: mv ~/docker-compose /usr/local/bin/docker-compose
-  when: docker_compose.stat.exists
-
 - name: Create workdir
   ansible.builtin.file:
-    path: ~/orangehrm
+    path: /home/ubuntu/orangehrm
     state: directory
     mode: '0755'
 
 - name: Copy files in workdir
   ansible.builtin.copy:
     src: ../files/
-    dest: ~/orangehrm/
+    dest: /home/ubuntu/orangehrm/
     directory_mode:
     owner: ubuntu
     group: ubuntu
@@ -108,16 +20,17 @@
     state: directory
     mode: '0755'
   with_items:
-  - ~/orangehrm/volumes
-  - ~/orangehrm/volumes/db/mysql
-  - ~/orangehrm/volumes/db/mysql/data
-  - ~/orangehrm/volumes/db/mysql/logs
-  - ~/orangehrm/volumes/db/mysql/init
-  - ~/orangehrm/volumes/web/
+  - /home/ubuntu/orangehrm/volumes
+  - /home/ubuntu/orangehrm/volumes/db
+  - /home/ubuntu/orangehrm/volumes/db/mysql
+  - /home/ubuntu/orangehrm/volumes/db/mysql/data
+  - /home/ubuntu/orangehrm/volumes/db/mysql/logs
+  - /home/ubuntu/orangehrm/volumes/db/mysql/init
+  - /home/ubuntu/orangehrm/volumes/web/
 
 - name: Create and start services
   community.docker.docker_compose:
-    project_src: ~/orangehrm
+    project_src: /home/ubuntu/orangehrm
   register: output
 
 - name: Show results
