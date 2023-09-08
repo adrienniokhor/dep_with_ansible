@@ -1,0 +1,29 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+ok: [localhost]
+
+TASK [Create private key file] *************************************************
+ok: [localhost]
+
+TASK [Change permissions] ******************************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_0001] ****************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [APP_0001]
+
+TASK [deploy dolibarr app] *****************************************************
+
+PLAY RECAP *********************************************************************
+APP_0001                   : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

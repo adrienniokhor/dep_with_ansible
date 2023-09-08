@@ -1,0 +1,191 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+changed: [localhost]
+
+TASK [Create private key file] *************************************************
+changed: [localhost]
+
+TASK [Change permissions] ******************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_2023_00000055] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [APP_2023_00000055]
+
+TASK [deploy dolibarr app] *****************************************************
+skipping: [APP_2023_00000055]
+
+TASK [deploy orangehrm app] ****************************************************
+skipping: [APP_2023_00000055]
+
+TASK [deploy prestashop app] ***************************************************
+
+TASK [prestashop : Remove file (delete file)] **********************************
+changed: [APP_2023_00000055] => (item=/etc/apt/keyrings/docker.gpg)
+changed: [APP_2023_00000055] => (item=/etc/apt/sources.list.d/docker.list)
+
+TASK [prestashop : Update APT Package Manager] *********************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Install aptitude] *******************************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Install docker packages] ************************************
+changed: [APP_2023_00000055] => (item=[u'apt-transport-https', u'ca-certificates', u'curl', u'software-properties-common', u'python3-pip', u'python3-setuptools'])
+
+TASK [prestashop : Add Docker s official GPG key] ******************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Verify that we have the key with the fingerprint] ***********
+ok: [APP_2023_00000055]
+
+TASK [prestashop : Set up the stable repository] *******************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Update apt packages] ****************************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Install docker] *********************************************
+ok: [APP_2023_00000055]
+
+TASK [prestashop : Add remote "ubuntu" user to "docker" group] *****************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Install docker-compose version 1.29.2] **********************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Check docker-compose exists] ********************************
+ok: [APP_2023_00000055]
+
+TASK [prestashop : Move docker-compose to /usr/local/bin/docker-compose] *******
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Create workdir] *********************************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Copy files in workdir] **************************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Create directories for attach volumes] **********************
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/db/mysql)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/db/mysql/data)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/db/mysql/logs)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/db/mysql/init)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/web/)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/web/modules)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/web/themes)
+changed: [APP_2023_00000055] => (item=~/prestashop/volumes/web/override)
+
+TASK [prestashop : Create and start services] **********************************
+changed: [APP_2023_00000055]
+
+TASK [prestashop : Show results] ***********************************************
+ok: [APP_2023_00000055] => {
+    "output": {
+        "changed": true, 
+        "failed": false, 
+        "services": {
+            "db": {
+                "prestashop_db_1": {
+                    "cmd": [
+                        "--default-authentication-plugin=mysql_native_password"
+                    ], 
+                    "image": "mysql:5.7", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "4beb76858157ecc37af9ed643866f10f0499a84ee3008e16d3dee64998c3c08b", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "prestashop", 
+                        "com.docker.compose.project.config_files": "/root/prestashop/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/root/prestashop", 
+                        "com.docker.compose.service": "db", 
+                        "com.docker.compose.version": "1.29.2"
+                    }, 
+                    "networks": {
+                        "prestashop_prestashop-net": {
+                            "IPAddress": "172.18.0.2", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "db", 
+                                "27995a06d4f1"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": null, 
+                            "macAddress": "02:42:ac:12:00:02"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }, 
+            "prestashop": {
+                "prestashop_prestashop_1": {
+                    "cmd": [
+                        "/tmp/docker_run.sh"
+                    ], 
+                    "image": "prestashop/prestashop:1.7", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "f5a55d0c1b84dae69dbedbe5e2f4c7c0e5374128a36731e75ecc0e16e5f4610e", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "prestashop", 
+                        "com.docker.compose.project.config_files": "/root/prestashop/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/root/prestashop", 
+                        "com.docker.compose.service": "prestashop", 
+                        "com.docker.compose.version": "1.29.2", 
+                        "maintainer": "PrestaShop Core Team <coreteam@prestashop.com>"
+                    }, 
+                    "networks": {
+                        "prestashop_prestashop-net": {
+                            "IPAddress": "172.18.0.3", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "prestashop", 
+                                "c445d3c59cc1"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": [
+                                "prestashop_db_1:db", 
+                                "prestashop_db_1:db_1", 
+                                "prestashop_db_1:prestashop_db_1"
+                            ], 
+                            "macAddress": "02:42:ac:12:00:03"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }
+        }
+    }
+}
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Clean local workdir] *****************************************************
+changed: [localhost] => (item=ssh_key_APP_2023_00000055.pem)
+
+PLAY RECAP *********************************************************************
+APP_2023_00000055          : ok=19   changed=14   unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

@@ -1,29 +1,27 @@
 ---
 - hosts: "{{ code_app }}"
   become: yes
-  vars:
-       app_name: "{{ app_name }}"
   tasks:
     - name: deploy dolibarr app
       include_role:
         name: dolibarr
-      when: "app_name == 'dolibarr'"
+      when: app_name == "erp"
     
     - name: deploy orangehrm app
       include_role:
         name: hrm
-      when: "app_name == 'hrm'"
+      when: app_name == "hrm"
 
     - name: deploy prestashop app
       include_role:
         name: prestashop
-      when: "app_name == 'ecommerce'"
+      when: app_name == "e-commerce"
 
 - hosts: localhost
   tasks:
     - name: Clean local workdir
       ansible.builtin.file:
-        path: '{{ item }}'
+        path: "{{ item }}"
         state: absent
       with_items: 
         - "ssh_key_{{ code_app }}.pem"

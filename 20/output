@@ -1,0 +1,95 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+changed: [localhost]
+
+TASK [Create private key file] *************************************************
+changed: [localhost]
+
+TASK [Change permissions] ******************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_2023_00000056] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [APP_2023_00000056]
+
+TASK [deploy dolibarr app] *****************************************************
+skipping: [APP_2023_00000056]
+
+TASK [deploy orangehrm app] ****************************************************
+skipping: [APP_2023_00000056]
+
+TASK [deploy prestashop app] ***************************************************
+
+TASK [prestashop : Remove file (delete file)] **********************************
+changed: [APP_2023_00000056] => (item=/etc/apt/keyrings/docker.gpg)
+changed: [APP_2023_00000056] => (item=/etc/apt/sources.list.d/docker.list)
+
+TASK [prestashop : Update APT Package Manager] *********************************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Install aptitude] *******************************************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Install docker packages] ************************************
+changed: [APP_2023_00000056] => (item=[u'apt-transport-https', u'ca-certificates', u'curl', u'software-properties-common', u'python3-pip', u'python3-setuptools'])
+
+TASK [prestashop : Add Docker s official GPG key] ******************************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Verify that we have the key with the fingerprint] ***********
+ok: [APP_2023_00000056]
+
+TASK [prestashop : Set up the stable repository] *******************************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Update apt packages] ****************************************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Install docker] *********************************************
+ok: [APP_2023_00000056]
+
+TASK [prestashop : Add remote "ubuntu" user to "docker" group] *****************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Install docker-compose version 1.29.2] **********************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Check docker-compose exists] ********************************
+ok: [APP_2023_00000056]
+
+TASK [prestashop : Move docker-compose to /usr/local/bin/docker-compose] *******
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Create workdir] *********************************************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Copy files in workdir] **************************************
+changed: [APP_2023_00000056]
+
+TASK [prestashop : Create directories for attach volumes] **********************
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/db/mysql)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/db/mysql/data)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/db/mysql/logs)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/db/mysql/init)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/web/)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/web/modules)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/web/themes)
+changed: [APP_2023_00000056] => (item=~/prestashop/volumes/web/override)
+
+TASK [prestashop : Create and start services] **********************************
+fatal: [APP_2023_00000056]: FAILED! => {"changed": false, "errors": [], "module_stderr": "Creating prestashop_db_1 ... \nCreating prestashop_db_1 ... done\nCreating prestashop_prestashop_1 ... \n", "module_stdout": "5.7: Pulling from library/mysql\nDigest: sha256:2c23f254c6b9444ecda9ba36051a9800e8934a2f5828ecc8730531db8142af83\nStatus: Downloaded newer image for mysql:5.7\n1.7: Pulling from prestashop/prestashop\nDigest: sha256:9a54be889c964daacd26a6fbd67e30b2b5b4481ebaf442a60f5ac142cac0a8f0\nStatus: Downloaded newer image for prestashop/prestashop:1.7\n", "msg": "Error starting project UnixHTTPConnectionPool(host='localhost', port=None): Read timed out. (read timeout=60)"}
+
+PLAY RECAP *********************************************************************
+APP_2023_00000056          : ok=17   changed=13   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+

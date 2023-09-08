@@ -1,0 +1,45 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+changed: [localhost]
+
+TASK [Create private key file] *************************************************
+changed: [localhost]
+
+TASK [Change permissions] ******************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_2023_00000052] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [APP_2023_00000052]
+
+TASK [deploy dolibarr app] *****************************************************
+skipping: [APP_2023_00000052]
+
+TASK [deploy orangehrm app] ****************************************************
+skipping: [APP_2023_00000052]
+
+TASK [deploy prestashop app] ***************************************************
+skipping: [APP_2023_00000052]
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Clean local workdir] *****************************************************
+changed: [localhost] => (item=ssh_key_APP_2023_00000052.pem)
+
+PLAY RECAP *********************************************************************
+APP_2023_00000052          : ok=1    changed=0    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
