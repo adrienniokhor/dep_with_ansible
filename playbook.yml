@@ -2,27 +2,28 @@
 - hosts: "{{ code_app }}"
   become: yes
   tasks:
-    - name: Change COMPOSE_HTTP_TIMEOUT and DOCKER_CLIENT_TIMEOUT
-      shell: |
-        set -o pipefail
-        export DOCKER_CLIENT_TIMEOUT=480
-        export COMPOSE_HTTP_TIMEOUT=480
-      args:
-        executable: /bin/bash
-  tasks:
     - name: deploy dolibarr app
       include_role:
         name: dolibarr
+      environment: 
+        DOCKER_CLIENT_TIMEOUT: 480
+        COMPOSE_HTTP_TIMEOUT: 480
       when: app_name == "erp"
     
     - name: deploy orangehrm app
       include_role:
         name: hrm
+      environment: 
+        DOCKER_CLIENT_TIMEOUT: 480
+        COMPOSE_HTTP_TIMEOUT: 480
       when: app_name == "hrm"
 
     - name: deploy prestashop app
       include_role:
         name: prestashop
+      environment: 
+        DOCKER_CLIENT_TIMEOUT: 480
+        COMPOSE_HTTP_TIMEOUT: 480
       when: app_name == "e-commerce"
 
 - hosts: localhost
