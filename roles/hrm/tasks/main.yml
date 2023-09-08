@@ -32,6 +32,9 @@
   community.docker.docker_compose:
     project_src: /home/ubuntu/orangehrm
   register: output
+  environment: 
+    DOCKER_CLIENT_TIMEOUT: '480'
+    COMPOSE_HTTP_TIMEOUT: '480'
 
 - name: Show results
   ansible.builtin.debug:

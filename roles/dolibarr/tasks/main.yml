@@ -39,6 +39,8 @@
   environment: 
     DOLI_IMAGE_TAG: '{{ DOLI_IMAGE_TAG }}'
     IP_ADDRESS: '{{ ip_host }}'
+    DOCKER_CLIENT_TIMEOUT: '480'
+    COMPOSE_HTTP_TIMEOUT: '480'
 
 - name: Show results
   ansible.builtin.debug:
