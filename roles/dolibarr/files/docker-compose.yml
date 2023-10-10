@@ -13,8 +13,18 @@ version: "3.8"
 networks:
     internal-pod:
         internal: true
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 10.5.1.0/24
+                  gateway: 10.5.1.1
     external-pod:
         internal: false
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 10.5.2.0/24
+                  gateway: 10.5.2.1
 
 secrets:
     mysql-user:
@@ -37,7 +47,8 @@ services:
             MYSQL_USER_FILE: "/run/secrets/mysql-user"
             MYSQL_PASSWORD_FILE: "/run/secrets/mysql-password"
         networks:
-            - internal-pod
+            internal-pod:
+                ipv4_address: 10.5.1.2
 
     cron:
         # user: "${USER_ID}:${GROUP_ID}"
@@ -61,11 +72,13 @@ services:
             DOLI_ADMIN_PASSWORD: admin456
             DOLI_DB_HOST: mariadb
             DOLI_DB_NAME: dolibarr
-            DOLI_URL_ROOT: http://${IP_ADDRESS}
+            # DOLI_URL_ROOT: http://${IP_ADDRESS}
+            DOLI_URL_ROOT: 'http://localhost'
             WWW_USER_ID: 1000
             WWW_GROUP_ID: 1000
         networks:
-            - internal-pod
+            internal-pod:
+                # ipv4_address: 10.5.1.3
 
     web:
         # user: "${USER_ID}:${GROUP_ID}"
@@ -88,11 +101,17 @@ services:
             DOLI_ADMIN_PASSWORD: "admin456"
             DOLI_DB_HOST: mariadb
             DOLI_DB_NAME: dolibarr
-            DOLI_URL_ROOT: 'http://${IP_ADDRESS}'
+            # DOLI_URL_ROOT: 'http://${IP_ADDRESS}'
+            DOLI_URL_ROOT: 'http://localhost'
             WWW_USER_ID: 1000
             WWW_GROUP_ID: 1000
         ports:
             - "80:80"
         networks:
-            - internal-pod
-            - external-pod
+            internal-pod:
+                ipv4_address: 10.5.1.4
+            external-pod:
+                ipv4_address: 10.5.2.2
+        extra_hosts:
+            - "localhost.localdomain:127.0.0.1"
+            - "host.docker.internal:host-gateway"
