@@ -94,6 +94,11 @@ VOLUME /var/www/scripts
 
 COPY docker-init.php /var/www/scripts/
 COPY docker-run.sh /usr/local/bin/
+COPY images/*  /var/www/html/theme/
+COPY login.tpl.php /var/www/html/core/tpl/
+COPY passwordforgotten.tpl.php /var/www/html/core/tpl/
+COPY passwordreset.tpl.php /var/www/html/core/tpl/
+RUN chmod +x /usr/local/bin/docker-run.sh
 ENTRYPOINT ["docker-run.sh"]
 
 CMD ["apache2-foreground"]

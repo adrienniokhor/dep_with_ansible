@@ -59,7 +59,9 @@ services:
             - mysql-user
             - mysql-password
         volumes:
-            - ./volumes/web/:/var/www:rw
+            - ./volumes/dolibarr/html/:/var/www/html/custom:rw
+            - ./volumes/dolibarr/document:/var/www/documents:rw
+            # - ./volumes/web/:/var/www:rw
             # - /etc/localtime:/etc/localtime:ro
             # - /etc/timezone:/etc/timezone:ro
         environment:
@@ -72,8 +74,8 @@ services:
             DOLI_ADMIN_PASSWORD: admin456
             DOLI_DB_HOST: mariadb
             DOLI_DB_NAME: dolibarr
-            # DOLI_URL_ROOT: http://${IP_ADDRESS}
-            DOLI_URL_ROOT: 'http://localhost'
+            DOLI_URL_ROOT: http://${IP_ADDRESS}
+            # DOLI_URL_ROOT: 'http://localhost'
             WWW_USER_ID: 1000
             WWW_GROUP_ID: 1000
         networks:
@@ -89,7 +91,9 @@ services:
             - mysql-user
             - mysql-password
         volumes:
-            - ./volumes/web/:/var/www:rw
+            - ./volumes/dolibarr/html/:/var/www/html/custom:rw
+            - ./volumes/dolibarr/document:/var/www/documents:rw
+            # - ./volumes/web/:/var/www:rw
             # - /etc/localtime:/etc/localtime:ro
             # - /etc/timezone:/etc/timezone:ro
         depends_on:
@@ -101,8 +105,8 @@ services:
             DOLI_ADMIN_PASSWORD: "admin456"
             DOLI_DB_HOST: mariadb
             DOLI_DB_NAME: dolibarr
-            # DOLI_URL_ROOT: 'http://${IP_ADDRESS}'
-            DOLI_URL_ROOT: 'http://localhost'
+            DOLI_URL_ROOT: 'http://${IP_ADDRESS}'
+            # DOLI_URL_ROOT: 'http://localhost'
             WWW_USER_ID: 1000
             WWW_GROUP_ID: 1000
         ports:
@@ -112,6 +116,6 @@ services:
                 ipv4_address: 10.5.1.4
             external-pod:
                 ipv4_address: 10.5.2.2
-        extra_hosts:
-            - "localhost.localdomain:127.0.0.1"
-            - "host.docker.internal:host-gateway"
+        # extra_hosts:
+        #     - "localhost.localdomain:127.0.0.1"
+        #     - "host.docker.internal:host-gateway"
