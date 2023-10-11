@@ -1,0 +1,11 @@
+ungrouped:
+  hosts:
+    APP_2023_00000075:
+      ansible_host: 54.201.170.135
+      ansible_user: "ubuntu"
+      ansible_port: 22
+      ansible_ssh_private_key_file: ssh_key_APP_2023_00000075.pem
+  vars:
+    nginx_http_port: 80
+    nginx_https_port: 443
+

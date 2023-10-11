@@ -1,0 +1,148 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+changed: [localhost]
+
+TASK [Create private key file] *************************************************
+changed: [localhost]
+
+TASK [Change permissions] ******************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_2023_00000077] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [APP_2023_00000077]
+
+TASK [deploy dolibarr app] *****************************************************
+skipping: [APP_2023_00000077]
+
+TASK [deploy orangehrm app] ****************************************************
+
+TASK [hrm : Create workdir] ****************************************************
+changed: [APP_2023_00000077]
+
+TASK [hrm : Copy files in workdir] *********************************************
+changed: [APP_2023_00000077]
+
+TASK [hrm : Create directories for attach volumes] *****************************
+changed: [APP_2023_00000077] => (item=/home/ubuntu/orangehrm/volumes)
+changed: [APP_2023_00000077] => (item=/home/ubuntu/orangehrm/volumes/db)
+changed: [APP_2023_00000077] => (item=/home/ubuntu/orangehrm/volumes/db/mysql)
+changed: [APP_2023_00000077] => (item=/home/ubuntu/orangehrm/volumes/db/mysql/data)
+changed: [APP_2023_00000077] => (item=/home/ubuntu/orangehrm/volumes/db/mysql/logs)
+changed: [APP_2023_00000077] => (item=/home/ubuntu/orangehrm/volumes/db/mysql/init)
+changed: [APP_2023_00000077] => (item=/home/ubuntu/orangehrm/volumes/web/)
+
+TASK [hrm : Create and start services] *****************************************
+changed: [APP_2023_00000077]
+
+TASK [hrm : Show results] ******************************************************
+ok: [APP_2023_00000077] => {
+    "output": {
+        "changed": true, 
+        "failed": false, 
+        "services": {
+            "db": {
+                "orangehrm_db_1": {
+                    "cmd": [
+                        "--default-authentication-plugin=mysql_native_password"
+                    ], 
+                    "image": "mysql:5.7", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "f5f05d03f49911f59a8eab3816862ea772c905277978fde95f3037e15e99c496", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "orangehrm", 
+                        "com.docker.compose.project.config_files": "/home/ubuntu/orangehrm/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/home/ubuntu/orangehrm", 
+                        "com.docker.compose.service": "db", 
+                        "com.docker.compose.version": "1.29.2"
+                    }, 
+                    "networks": {
+                        "orangehrm_default": {
+                            "IPAddress": "172.18.0.2", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "db", 
+                                "147dfee82cd0"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": null, 
+                            "macAddress": "02:42:ac:12:00:02"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }, 
+            "orangehrm": {
+                "orangehrm_orangehrm_1": {
+                    "cmd": [
+                        "apache2-foreground"
+                    ], 
+                    "image": "orangehrm/orangehrm:5.5", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "3700378f9d24f91eac48b56bc463ae0609887eb6fe1ed639419e8b9a0cfbf5bd", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "orangehrm", 
+                        "com.docker.compose.project.config_files": "/home/ubuntu/orangehrm/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/home/ubuntu/orangehrm", 
+                        "com.docker.compose.service": "orangehrm", 
+                        "com.docker.compose.version": "1.29.2"
+                    }, 
+                    "networks": {
+                        "orangehrm_default": {
+                            "IPAddress": "172.18.0.3", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "47a20818e975", 
+                                "orangehrm"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": [
+                                "orangehrm_db_1:db", 
+                                "orangehrm_db_1:db_1", 
+                                "orangehrm_db_1:orangehrm_db_1"
+                            ], 
+                            "macAddress": "02:42:ac:12:00:03"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }
+        }
+    }
+}
+
+TASK [deploy prestashop app] ***************************************************
+skipping: [APP_2023_00000077]
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Clean local workdir] *****************************************************
+changed: [localhost] => (item=ssh_key_APP_2023_00000077.pem)
+
+PLAY RECAP *********************************************************************
+APP_2023_00000077          : ok=6    changed=4    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

@@ -1,0 +1,152 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+changed: [localhost]
+
+TASK [Create private key file] *************************************************
+changed: [localhost]
+
+TASK [Change permissions] ******************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_2023_00000078] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [APP_2023_00000078]
+
+TASK [deploy dolibarr app] *****************************************************
+skipping: [APP_2023_00000078]
+
+TASK [deploy orangehrm app] ****************************************************
+skipping: [APP_2023_00000078]
+
+TASK [deploy prestashop app] ***************************************************
+
+TASK [prestashop : Create workdir] *********************************************
+changed: [APP_2023_00000078]
+
+TASK [prestashop : Copy files in workdir] **************************************
+changed: [APP_2023_00000078]
+
+TASK [prestashop : Create directories for attach volumes] **********************
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/db)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/db/mysql)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/db/mysql/data)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/db/mysql/logs)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/db/mysql/init)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/web)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/web/modules)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/web/themes)
+changed: [APP_2023_00000078] => (item=/home/ubuntu/prestashop/volumes/web/override)
+
+TASK [prestashop : Create and start services] **********************************
+changed: [APP_2023_00000078]
+
+TASK [prestashop : Show results] ***********************************************
+ok: [APP_2023_00000078] => {
+    "output": {
+        "changed": true, 
+        "failed": false, 
+        "services": {
+            "db": {
+                "prestashop_db_1": {
+                    "cmd": [
+                        "--default-authentication-plugin=mysql_native_password"
+                    ], 
+                    "image": "mysql:5.7", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "f42261b0b6786cd3c30a9aeba4c0060dfb7893a10f6819afe68bf488536dace7", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "prestashop", 
+                        "com.docker.compose.project.config_files": "/home/ubuntu/prestashop/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/home/ubuntu/prestashop", 
+                        "com.docker.compose.service": "db", 
+                        "com.docker.compose.version": "1.29.2"
+                    }, 
+                    "networks": {
+                        "prestashop_prestashop-net": {
+                            "IPAddress": "172.18.0.2", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "db", 
+                                "f8943ec448c3"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": null, 
+                            "macAddress": "02:42:ac:12:00:02"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }, 
+            "prestashop": {
+                "prestashop_prestashop_1": {
+                    "cmd": [
+                        "/tmp/docker_run.sh"
+                    ], 
+                    "image": "prestashop/prestashop:1.7", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "6a5beb9c4ef3a08438de073bf903d93684dfc32a4f427c8bd0ddb51617b38670", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "prestashop", 
+                        "com.docker.compose.project.config_files": "/home/ubuntu/prestashop/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/home/ubuntu/prestashop", 
+                        "com.docker.compose.service": "prestashop", 
+                        "com.docker.compose.version": "1.29.2", 
+                        "maintainer": "PrestaShop Core Team <coreteam@prestashop.com>"
+                    }, 
+                    "networks": {
+                        "prestashop_prestashop-net": {
+                            "IPAddress": "172.18.0.3", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "8f9a6f975f3a", 
+                                "prestashop"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": [
+                                "prestashop_db_1:db", 
+                                "prestashop_db_1:db_1", 
+                                "prestashop_db_1:prestashop_db_1"
+                            ], 
+                            "macAddress": "02:42:ac:12:00:03"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }
+        }
+    }
+}
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Clean local workdir] *****************************************************
+changed: [localhost] => (item=ssh_key_APP_2023_00000078.pem)
+
+PLAY RECAP *********************************************************************
+APP_2023_00000078          : ok=6    changed=4    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

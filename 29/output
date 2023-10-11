@@ -1,0 +1,27 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+ok: [localhost]
+
+TASK [Create private key file] *************************************************
+ok: [localhost]
+
+TASK [Change permissions] ******************************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_2023_00000062] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+fatal: [APP_2023_00000062]: FAILED! => {"msg": "Failed to connect to the host via ssh: ssh: connect to host 54.188.89.0 port 22: Connection timed out"}
+
+PLAY RECAP *********************************************************************
+APP_2023_00000062          : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

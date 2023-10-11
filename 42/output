@@ -1,0 +1,205 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create inventory] ********************************************************
+changed: [localhost]
+
+TASK [Create private key file] *************************************************
+changed: [localhost]
+
+TASK [Change permissions] ******************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [APP_2023_00000076] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [APP_2023_00000076]
+
+TASK [deploy dolibarr app] *****************************************************
+
+TASK [dolibarr : Create workdir] ***********************************************
+changed: [APP_2023_00000076]
+
+TASK [dolibarr : Copy files in workdir] ****************************************
+changed: [APP_2023_00000076]
+
+TASK [dolibarr : Create directories for attach volumes] ************************
+changed: [APP_2023_00000076] => (item=/home/ubuntu/dolibarr/volumes)
+changed: [APP_2023_00000076] => (item=/home/ubuntu/dolibarr/volumes/db)
+changed: [APP_2023_00000076] => (item=/home/ubuntu/dolibarr/volumes/db/mariadb)
+changed: [APP_2023_00000076] => (item=/home/ubuntu/dolibarr/volumes/web/)
+changed: [APP_2023_00000076] => (item=/home/ubuntu/dolibarr/volumes/web/documents)
+changed: [APP_2023_00000076] => (item=/home/ubuntu/dolibarr/volumes/web/html)
+changed: [APP_2023_00000076] => (item=/home/ubuntu/dolibarr/volumes/web/scripts)
+
+TASK [dolibarr : Create and start services] ************************************
+changed: [APP_2023_00000076]
+
+TASK [dolibarr : Show results] *************************************************
+ok: [APP_2023_00000076] => {
+    "output": {
+        "changed": true, 
+        "failed": false, 
+        "services": {
+            "cron": {
+                "dolibarr_cron_1": {
+                    "cmd": [
+                        "apache2-foreground"
+                    ], 
+                    "image": "ans/dolibarr:17.0.2-php8.1", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "0f859f66e97e4c989913a668b0d7a6cc3217a3822e6dd2d3d65556ff0605b464", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "dolibarr", 
+                        "com.docker.compose.project.config_files": "/home/ubuntu/dolibarr/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/home/ubuntu/dolibarr", 
+                        "com.docker.compose.service": "cron", 
+                        "com.docker.compose.version": "1.29.2", 
+                        "maintainer": "Garcia MICHEL <garcia@soamichel.fr>"
+                    }, 
+                    "networks": {
+                        "dolibarr_internal-pod": {
+                            "IPAddress": "172.18.0.3", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "cron", 
+                                "7960e1419a6e"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": null, 
+                            "macAddress": "02:42:ac:12:00:03"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }, 
+            "mariadb": {
+                "dolibarr_mariadb_1": {
+                    "cmd": [
+                        "mariadbd"
+                    ], 
+                    "image": "mariadb:latest", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "10d5e4bfa0bf2367f7a29b0722223a29506b198d9dde8dbe81707ec96a62e1ed", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "dolibarr", 
+                        "com.docker.compose.project.config_files": "/home/ubuntu/dolibarr/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/home/ubuntu/dolibarr", 
+                        "com.docker.compose.service": "mariadb", 
+                        "com.docker.compose.version": "1.29.2", 
+                        "org.opencontainers.image.authors": "MariaDB Community", 
+                        "org.opencontainers.image.base.name": "docker.io/library/ubuntu:jammy", 
+                        "org.opencontainers.image.description": "MariaDB Database for relational SQL", 
+                        "org.opencontainers.image.documentation": "https://hub.docker.com/_/mariadb/", 
+                        "org.opencontainers.image.licenses": "GPL-2.0", 
+                        "org.opencontainers.image.ref.name": "ubuntu", 
+                        "org.opencontainers.image.source": "https://github.com/MariaDB/mariadb-docker", 
+                        "org.opencontainers.image.title": "MariaDB Database", 
+                        "org.opencontainers.image.url": "https://github.com/MariaDB/mariadb-docker", 
+                        "org.opencontainers.image.vendor": "MariaDB Community", 
+                        "org.opencontainers.image.version": "11.0.2"
+                    }, 
+                    "networks": {
+                        "dolibarr_internal-pod": {
+                            "IPAddress": "172.18.0.2", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "15602a16d04e", 
+                                "mariadb"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": null, 
+                            "macAddress": "02:42:ac:12:00:02"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }, 
+            "web": {
+                "dolibarr_web_1": {
+                    "cmd": [
+                        "apache2-foreground"
+                    ], 
+                    "image": "ans/dolibarr:17.0.2-php8.1", 
+                    "labels": {
+                        "com.docker.compose.config-hash": "959298884d8f0aadb9811885e2573d4d6a4e2fdcf582dc745bf02c4f82a038ae", 
+                        "com.docker.compose.container-number": "1", 
+                        "com.docker.compose.oneoff": "False", 
+                        "com.docker.compose.project": "dolibarr", 
+                        "com.docker.compose.project.config_files": "/home/ubuntu/dolibarr/docker-compose.yml", 
+                        "com.docker.compose.project.working_dir": "/home/ubuntu/dolibarr", 
+                        "com.docker.compose.service": "web", 
+                        "com.docker.compose.version": "1.29.2", 
+                        "maintainer": "Garcia MICHEL <garcia@soamichel.fr>"
+                    }, 
+                    "networks": {
+                        "dolibarr_external-pod": {
+                            "IPAddress": "172.19.0.2", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "b89eb6500234", 
+                                "web"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": null, 
+                            "macAddress": "02:42:ac:13:00:02"
+                        }, 
+                        "dolibarr_internal-pod": {
+                            "IPAddress": "172.18.0.4", 
+                            "IPPrefixLen": 16, 
+                            "aliases": [
+                                "b89eb6500234", 
+                                "web"
+                            ], 
+                            "globalIPv6": "", 
+                            "globalIPv6PrefixLen": 0, 
+                            "links": null, 
+                            "macAddress": "02:42:ac:12:00:04"
+                        }
+                    }, 
+                    "state": {
+                        "running": true, 
+                        "status": "running"
+                    }
+                }
+            }
+        }
+    }
+}
+
+TASK [deploy orangehrm app] ****************************************************
+skipping: [APP_2023_00000076]
+
+TASK [deploy prestashop app] ***************************************************
+skipping: [APP_2023_00000076]
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Clean local workdir] *****************************************************
+changed: [localhost] => (item=ssh_key_APP_2023_00000076.pem)
+
+PLAY RECAP *********************************************************************
+APP_2023_00000076          : ok=6    changed=4    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
