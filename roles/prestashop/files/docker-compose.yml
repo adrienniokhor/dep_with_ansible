@@ -15,7 +15,8 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - prestashop-net
+      prestashop-net:
+        ipv4_address: 10.5.1.2
 
 
   prestashop:
@@ -54,7 +55,8 @@ services:
     ports:
       - 8080:80
     networks:
-      - prestashop-net
+      prestashop-net:
+        ipv4_address: 10.5.1.3
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://${IP_ADDRESS}:8080" ]
       interval: 30s
@@ -85,3 +87,8 @@ services:
 
 networks:
   prestashop-net:
+    driver: bridge
+    ipam:
+        config:
+            - subnet: 10.5.1.0/24
+              gateway: 10.5.1.1
